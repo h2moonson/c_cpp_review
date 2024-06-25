@@ -1,0 +1,22 @@
+여태까지는 main 함수 위해서 함수를 정의해버렸다. 하지만 대부분의 경우 main함수 아래에 정의한다.
+함수의원형(prototype)선언
+#include <stdio.h>
+int swap(int *a, int *b);  // 이 것이 바로 함수의 원형
+int main() {
+  int i, j;
+  i = 3;
+  j = 5;
+  printf("SWAP 이전 : i : %d, j : %d \n", i, j);
+  swap(&i, &j);
+  printf("SWAP 이후 : i : %d, j : %d \n", i, j);
+
+  return 0;
+}
+int swap(int *a, int *b) {
+  int temp = *a;
+
+  *a = *b;
+  *b = temp;
+
+  return 0;
+}
