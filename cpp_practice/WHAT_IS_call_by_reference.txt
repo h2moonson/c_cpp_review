@@ -1,0 +1,99 @@
+값으로 전달의 한계:
+값으로 전달은 두 가지 한계가 있다. 
+첫째, 큰 구조체 또는 클래스를 함수에 전달할 때 값으로 전달은 인수의 복사본을 
+함수 매개 변수로 만든다. 이 경우 복사하는데 큰 비용이 들어 성능이 저하될 수 있다. 
+둘째, 값으로 인수를 전달할 경우 함수에서 호출자에게 값을 반환하는 유일한 방법은 
+함수의 반환 값을 사용하는 것이다. 이 방법도 좋지만, 함수에서 인수를 수정하는 것이 
+더 명확하고 효율적일 수 있다. 참조를 통해 위 두 가지 문제를 해결할 수 있다.
+출처: https://boycoding.tistory.com/217 [소년코딩:티스토리]
+
+**변수를 참조로 전달하려면 함수 매개변수를 일반 변수가 아닌 참조로 선언해야 한다.
+void foo(int& value)
+{
+    value = 6;
+}
+int main()
+{
+    int value = 5;
+    cout << "value= " << value << '\n';
+    foo(value);
+    cout << "value= " << value << '\n';
+    return 0;
+}
+
+**const 참조로 전달 ** 
+참조를 사용하면 함수가 인수의 값을 변경할 수 있으므로 인수가 읽기 전용일 때는 사용하기에 바람직하지 않다. 
+함수가 인수의 값을 변경해서는 안 되지만 값으로 전달하지 않으려면 const 참조를 전달하는 것이 가장 좋다.
+(메모리 관리에 효율적?)
+const 참조는 변수가 참조를 통해 변경되는 것을 허용하지 않는 참조다. 그러므로 const 참조를 매개변수로 
+사용하면 함수가 인수를 변경하지 않는다는 것을 호출자에게 보장한다. 
+
+void foo(const int& x) //x is a const reference
+{
+    x = 6; //compiler error : const 참조는 값을 변경할 수 없다.
+}
+
+const 참조를 사용하는 것은 다음과 같은 이유로 유용하다.
+
+
+컴파일러는 변경해서 안 되는 값을 변경하지 않도록 한다. (위의 예제처럼 시도할 경우 오류가 발생한다.)
+
+함수가 인수의 값을 변경하지 않는다는 것을 프로그래머에게 알려준다. (디버깅에 도움이 될 수 있다.)
+
+const가 아닌 참조 매개 변수에는 const 인수를 전달할 수 없다. const 매개 변수를 사용하면 non-const 및 const 인수를 함수에 전달할 수 있다.
+
+const 참조는 l-value, const l-value 및 r-value를 포함한 모든 유형의 인수를 허용할 수 있다.
+
+
+
+  규칙: 참조로 인수를 전달할 때 인수 값을 변경해야 하는 경우가 아니면 항상 const 참조를 사용하자.
+
+***포인터에 대한 참조 ****
+#include <iostream>
+
+void foo(int*& ptr) // pass pointer by reference
+{
+    ptr = nullptr; // 실제 ptr 인수를 변경할 수 있다.
+}
+
+int main()
+{
+    int x = 5;
+    int *ptr = &x;
+    std::cout << "ptr is: " << (ptr ? "non-null" : "null") << '\n'; // prints non-null
+    foo(ptr);
+    std::cout << "ptr is: " << (ptr ? "non-null" : "null") << '\n'; // prints null
+
+    return 0;
+}
+
+
+ ## 일부만 수정?? ##
+
+ 참조를 이용해서 C 스타일 배열을 주소별로 전달할 수 있다.
+ 함수가 배열을 변경하거나 고정 배열의 배열 정보에 접근해야 하는 경우 유용하다. 
+ 그러나 이 작업을 수행하려면 매개 변수에서 배열 크기를 명시적으로 정의해야 한다.
+
+
+#include <iostream>
+
+// Note: You need to specify the array size in the function declaration
+void printElements(int (&arr)[4])
+{
+  int length{ sizeof(arr) / sizeof(arr[0]) }; // we can now do this since the array won't decay
+
+  for (int i{ 0 }; i < length; ++i)
+  {
+    std::cout << arr[i] << std::endl;
+  }
+}
+
+int main()
+{
+    int arr[]{ 99, 20, 14, 80 };
+
+    printElements(arr);
+
+    return 0;
+}
+

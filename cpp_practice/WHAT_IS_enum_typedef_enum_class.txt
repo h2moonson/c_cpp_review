@@ -1,0 +1,41 @@
+1. enum class의 장점
+
+    스코프 강제: enum class는 강력한 스코프를 가지며, 이름 충돌을 방지할 수 있습니다. 예를 들어, enum class EventType에서 STOP을 사용하려면 반드시 EventType::STOP으로 명시해야 합니다. 이렇게 하면 다른 열거형이나 전역 상수와의 충돌을 방지할 수 있습니다.
+
+    타입 안전성: enum class는 정수형으로 암시적 변환이 되지 않기 때문에 타입 안전성을 높일 수 있습니다. 이는 실수를 줄이고 코드의 안전성을 높이는 데 도움을 줍니다.
+
+
+2. enum class EventType 사용 예시
+
+enum class EventType {
+    DRIVE = 1,
+    STOP = 4,
+    STOP_LINE = 5,
+    STOP_PARKING = 6,
+    STOP_DELIVERY = 7,
+    DECEL = 8,
+    DECEL_U_TURN_START = 9,
+    DECEL_U_TURN_END = 10,
+    DECEL_SPEED_BUMP_START = 11,
+    DECEL_SPEED_BUMP_END = 12
+};
+
+이렇게 정의하면, EventType::STOP처럼 사용해야 합니다.
+3. 정수로 변환 (Typecast)
+
+enum class는 기본적으로 정수형으로의 암시적 변환을 허용하지 않습니다. 따라서, enum class의 값을 정수형으로 사용하려면 명시적으로 타입 캐스팅을 해줘야 합니다.
+
+예를 들어:
+EventType event = EventType::STOP;
+int eventValue = static_cast<int>(event);  // 명시적 타입캐스팅
+
+이렇게 static_cast<int>를 사용하여 EventType 값을 정수로 변환할 수 있습니다.
+4. enum class와 기존 typedef enum의 비교
+
+    기존 typedef enum: 기본적으로 정수형으로 암시적 변환이 가능하고, 스코프를 강제하지 않습니다. 따라서 코드의 가독성과 안전성이 떨어질 수 있습니다.
+
+    enum class: 타입 안전성과 스코프를 강제하여, 이름 충돌을 방지하고 안전한 코드 작성을 돕습니다. 그러나 정수형으로 변환할 때는 명시적 타입 캐스팅이 필요합니다.
+
+5. 결론
+
+enum class를 사용하면 타입 안전성과 스코프 관리가 강화되어 더 안전한 코드를 작성할 수 있습니다. 단, 정수형으로 사용하려면 명시적으로 타입 캐스팅이 필요하다는 점을 유의해야 합니다. 이를 고려하여, typedef enum 대신 enum class를 사용하는 것이 현대 C++에서 더 권장되는 방법입니다.

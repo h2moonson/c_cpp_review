@@ -1,0 +1,42 @@
+1. Python 'enum' 과 C++ enum
+
+C++ Enum:
+
+    C++에서 enum은 열거형 상수를 정의하는 데 사용됩니다.
+    열거형 상수는 기본적으로 정수 값으로 취급됩니다.
+    enum class (C++11 이상)로 정의할 경우, 스코프가 명확하게 제한되고, 암묵적인 변환이 방지됩니다.
+
+    enum Color { RED, GREEN, BLUE };  // 전통적인 enum
+    enum class TrafficLight { RED, YELLOW, GREEN };  // enum class
+
+
+Python Enum:
+
+    Python에서는 enum 모듈을 사용하여 열거형을 정의합니다.
+    열거형 멤버는 기본적으로 int 값을 가지지만, 커스텀 값을 가질 수도 있습니다.
+    멤버는 열거형 클래스 내에서 접근해야 하며, 고유한 이름 공간을 갖습니다.
+
+    from enum import Enum
+
+    class Color(Enum):
+        RED = 1
+        GREEN = 2
+        BLUE = 3
+
+2. 타입 안정성 
+
+C++ Enum:
+
+    전통적인 C++ enum은 타입 안전성이 떨어집니다. enum 멤버는 단순한 정수로 취급되어 의도치 않은 변환이 발생할 수 있습니다.
+    enum class를 사용하면 이런 문제를 방지할 수 있습니다.
+
+    enum class TrafficLight { RED, YELLOW, GREEN };
+    TrafficLight light = TrafficLight::RED;
+    // light = 1; // 컴파일 오류: `enum class`는 암시적 정수 변환이 불가능함
+
+Python Enum:
+
+    Python의 enum은 타입 안전성을 유지합니다. 열거형 멤버는 명시적으로 클래스의 멤버로만 접근할 수 있으며, 타입이 엄격하게 관리됩니다.
+
+    light = Color.RED
+    # light = 1  # 오류: Python Enum은 int 값과 자동 변환되지 않음
